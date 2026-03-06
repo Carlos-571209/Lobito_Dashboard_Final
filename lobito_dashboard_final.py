@@ -89,8 +89,8 @@ for i in range(n_years):
         dscr_array[i] = cfads[i] / debt_service[i]
 min_dscr = np.min(dscr_array[dscr_array > 0]) if np.any(dscr_array > 0) else 0
 
-# Valuation
-project_npv = npf.npv(wacc, fcff[1:]) + fcff[0]
+# Valuation (CORRECTED)
+project_npv = npf.npv(wacc, fcff)
 project_irr = npf.irr(fcff)
 
 # 5. Main Dashboard Interface
@@ -142,12 +142,9 @@ with col_chart1:
 with col_chart2:
     st.subheader("Amortization: Principal vs. Interest")
     
-    # Grab the exact years from the arrays we ALREADY calculated
     chart_years = years[3:18]
     chart_total_payment = debt_service[3:18]
     chart_interest = interest[3:18]
-    
-    # Simply subtract interest from the total payment to get the principal
     chart_principal = chart_total_payment - chart_interest
     
     fig2 = go.Figure()
